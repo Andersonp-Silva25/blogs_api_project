@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const secret = process.env.JWT_SECRET || 'Xablauzinho da Massa';
+const secret = process.env.JWT_SECRET || 'HakunaMatata';
 
 const jwtConfig = {
   algorithm: 'HS256',
