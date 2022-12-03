@@ -17,6 +17,16 @@ const createUser = async (user) => {
   return { type: 409, message: 'User already registered' };
 };
 
+const getAllUsers = async () => {
+  const users = await User.findAll();
+  const usersWithoutPassword = users.map((user) => {
+    const { password: _password, ...deletePassword } = user.dataValues;
+    return deletePassword;
+  });
+  return usersWithoutPassword;
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
