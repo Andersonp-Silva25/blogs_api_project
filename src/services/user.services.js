@@ -23,10 +23,20 @@ const getAllUsers = async () => {
     const { password: _password, ...deletePassword } = user.dataValues;
     return deletePassword;
   });
-  return usersWithoutPassword;
+  return { type: null, message: usersWithoutPassword };
+};
+
+const getUserById = async (id) => {
+  const user = await User.findByPk(id);
+  
+  if (!user) return { type: 404, message: 'User does not exist' };
+  
+  const { password: _password, ...userWithoutPassword } = user.dataValues;
+  return { type: null, message: userWithoutPassword };
 };
 
 module.exports = {
   createUser,
   getAllUsers,
+  getUserById,
 };
