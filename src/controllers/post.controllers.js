@@ -53,9 +53,24 @@ const putBlogPost = async (req, res) => {
   }
 };
 
+const deleteBlogPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { authorization: idToken } = req.headers;
+    const { type, message } = await postServices.deleteBlogPost(idToken, id);
+  
+    if (type) return res.status(type).json({ message });
+
+    return res.status(204).end();
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
   putBlogPost,
+  deleteBlogPost,
 };

@@ -85,9 +85,28 @@ const putBlogPost = async (token, id, data) => {
   return { type: null, message: getUpdatedPost.message };
 };
 
+const deleteBlogPost = async (token, id) => {
+  const decode = decodeToken(token);
+  const tokenId = decode.date.id;
+
+  const post = await BlogPost.findByPk(id);
+  
+  if (!post) return { type: 404, message: 'Post does not exist' };
+  if (tokenId !== post.userId) return { type: 401, message: 'Unauthorized user' };
+
+  await BlogPost.destroy({
+    where: {
+      id,
+    },
+  });
+
+  return { type: null, message: 'Success' };
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
   putBlogPost,
+  deleteBlogPost,
 };

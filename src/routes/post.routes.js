@@ -11,5 +11,6 @@ postRouters.post(
 postRouters.get('/', validateToken, postControllers.getAllPosts);
 postRouters.get('/:id', validateToken, postControllers.getPostById);
 postRouters.put('/:id', validateToken, validateEmptyFields, postControllers.putBlogPost);
+postRouters.delete('/:id', validateToken, postControllers.deleteBlogPost);
 
 module.exports = postRouters;
