@@ -64,8 +64,30 @@ const getPostById = async (id) => {
   return { type: null, message: postById };
 };
 
+const putBlogPost = async (token, id, data) => {
+  const decode = decodeToken(token);
+  const tokenId = decode.date.id;
+
+  const post = await BlogPost.findByPk(id);
+  const { userId } = post;
+
+  if (tokenId !== userId) return { type: 401, message: 'Unauthorized user' };
+
+  await BlogPost.update(data, {
+    where: {
+      title: post.title,
+      content: post.content,
+    },
+  });
+
+  const getUpdatedPost = await getPostById(id);
+
+  return { type: null, message: getUpdatedPost.message };
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
+  putBlogPost,
 };

@@ -38,8 +38,24 @@ const getPostById = async (req, res) => {
   }
 };
 
+const putBlogPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { authorization: idToken } = req.headers;
+    const data = req.body;
+    const { type, message } = await postServices.putBlogPost(idToken, id, data);
+  
+    if (type) return res.status(type).json({ message });
+
+    return res.status(200).json(message);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
+  putBlogPost,
 };
