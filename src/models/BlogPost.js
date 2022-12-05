@@ -1,5 +1,7 @@
 'use strict';
 
+const { DATE } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const blogPost = sequelize.define('BlogPost', {
     id: {
@@ -9,8 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
     userId: DataTypes.INTEGER,
-    published: DataTypes.DATE,
-    updated: DataTypes.DATE,
+    published: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updated: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   }, {
     timestamps: false,
     tableName: 'blog_posts',
@@ -19,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 
   blogPost.associate = (models) => {
     blogPost.belongsTo(models.User, {
-      foreingKey: 'userId', as: 'users'
+      foreingKey: 'userId', as: 'user'
     });
   }
 

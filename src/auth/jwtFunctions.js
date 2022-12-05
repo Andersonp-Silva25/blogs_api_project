@@ -13,6 +13,13 @@ const createToken = (userWithoutPassword) => {
   return token;
 };
 
+const decodeToken = (token) => {
+  const decode = jwt.decode(token);
+
+  return decode;
+};
+
 module.exports = {
   createToken,
+  decodeToken,
 };
