@@ -17,9 +17,22 @@ const createBlogPost = async (req, res) => {
 
 const getAllPosts = async (_req, res) => {
   try {
-    const allPosts = await postServices.getAllPosts();
+    const { message } = await postServices.getAllPosts();
   
-    return res.status(200).json(allPosts);
+    return res.status(200).json(message);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type, message } = await postServices.getPostById(id);
+  
+    if (type) return res.status(type).json({ message });
+
+    return res.status(200).json(message);
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -28,4 +41,5 @@ const getAllPosts = async (_req, res) => {
 module.exports = {
   createBlogPost,
   getAllPosts,
+  getPostById,
 };
