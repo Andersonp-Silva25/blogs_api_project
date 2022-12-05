@@ -6,5 +6,6 @@ const { validateToken } = require('../middlewares/validateJWT');
 const postRouters = express.Router();
 
 postRouters.post('/', validateToken, validateEmptyFields, postControllers.createBlogPost);
+postRouters.get('/', validateToken, postControllers.getAllPosts);
 
 module.exports = postRouters;

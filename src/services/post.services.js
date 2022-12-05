@@ -1,5 +1,5 @@
 const { decodeToken } = require('../auth/jwtFunctions');
-const { BlogPost, PostCategory, Category } = require('../models');
+const { BlogPost, PostCategory, Category, User } = require('../models');
 
 const checkCategories = async (categories) => {
   const getAllCategories = await Category.findAll();
@@ -41,6 +41,17 @@ const createBlogPost = async (token, post) => {
   return { type: null, message: result };
 };
 
+const getAllPosts = async () => {
+  const allPosts = await BlogPost.findAll({ 
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories' },
+    ], 
+  });
+  return allPosts;
+};
+
 module.exports = {
   createBlogPost,
+  getAllPosts,
 };
