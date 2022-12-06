@@ -7,7 +7,7 @@ module.exports = {
         type:Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true,        
+        autoIncrement: true,       
        },
        title: {
         type: Sequelize.STRING,
@@ -24,7 +24,9 @@ module.exports = {
         references: {
           model: 'users',
           key: 'id',
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
        },
        published: {
         type: Sequelize.DATE,

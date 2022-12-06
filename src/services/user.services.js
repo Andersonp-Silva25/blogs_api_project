@@ -1,4 +1,4 @@
-const { createToken } = require('../auth/jwtFunctions');
+const { createToken, decodeToken } = require('../auth/jwtFunctions');
 const { User } = require('../models');
 
 const createUser = async (user) => {
@@ -35,8 +35,21 @@ const getUserById = async (id) => {
   return { type: null, message: userWithoutPassword };
 };
 
+const deleteUser = async (token) => {
+  const { date: { id } } = decodeToken(token);
+  
+  await User.destroy({
+    where: {
+      id,
+    },
+  });
+
+  return { type: null, message: 'Success' };
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  deleteUser,
 };
