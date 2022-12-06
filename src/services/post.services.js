@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { decodeToken } = require('../auth/jwtFunctions');
 const { BlogPost, PostCategory, Category, User } = require('../models');
 
@@ -103,10 +104,27 @@ const deleteBlogPost = async (token, id) => {
   return { type: null, message: 'Success' };
 };
 
+const getPostByQuery = async (query) => {
+  const postByQuery = await BlogPost.findAll({ 
+    where: { 
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } }, 
+        { content: { [Op.like]: `%${query}%` } },
+      ] }, 
+    include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories' },
+      ], 
+    });
+
+  return { type: null, message: postByQuery };
+};
+
 module.exports = {
   createBlogPost,
   getAllPosts,
   getPostById,
   putBlogPost,
   deleteBlogPost,
+  getPostByQuery,
 };
